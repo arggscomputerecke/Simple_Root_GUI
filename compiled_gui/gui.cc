@@ -1,6 +1,7 @@
 #include "gui.hh"
 #include <iostream>
 #include "TGSignals.hh"
+#include "Unew.hh"
 
 
 
@@ -8,43 +9,47 @@
 ui::ui(TApplication* app_):m_app(app_)
 {
   // main frame
-  fMainFrame1654 = new TGMainFrame(gClient->GetRoot(), 10, 10, kMainFrame | kVerticalFrame);
+  fMainFrame1654 = Unew TGMainFrame(gClient->GetRoot(), 10, 10, kMainFrame | kVerticalFrame);
   fMainFrame1654->SetName("fMainFrame1654");
 
   // vertical frame
-  fVerticalFrame1325 = new TGVerticalFrame(fMainFrame1654, 577, 559, kVerticalFrame);
+  fVerticalFrame1325 = Unew TGVerticalFrame(fMainFrame1654.get(), 577, 559, kVerticalFrame);
   fVerticalFrame1325->SetName("fVerticalFrame1325");
 
   // horizontal frame
-  fHorizontalFrame1330 = new TGHorizontalFrame(fVerticalFrame1325, 573, 26, kHorizontalFrame);
+  fHorizontalFrame1330 = Unew TGHorizontalFrame(fVerticalFrame1325.get(), 573, 26, kHorizontalFrame);
   fHorizontalFrame1330->SetName("fHorizontalFrame1330");
-  fTextButton1353 = new TGTextButton(fHorizontalFrame1330, "fTextButton1353", -1, TGTextButton::GetDefaultGC()(), TGTextButton::GetDefaultFontStruct(), kRaisedFrame);
+  fTextButton1353 = Unew TGTextButton(fHorizontalFrame1330.get(), "fTextButton1353", -1, TGTextButton::GetDefaultGC()(), TGTextButton::GetDefaultFontStruct(), kRaisedFrame);
   fTextButton1353->SetTextJustify(36);
   fTextButton1353->SetMargins(0, 0, 0, 0);
   fTextButton1353->SetWrapLength(-1);
   fTextButton1353->Resize(96, 22);
-  fHorizontalFrame1330->AddFrame(fTextButton1353, new TGLayoutHints(kLHintsLeft | kLHintsTop, 2, 2, 2, 2));
-  fTextButton1362 = new TGTextButton(fHorizontalFrame1330, "fTextButton1362", -1, TGTextButton::GetDefaultGC()(), TGTextButton::GetDefaultFontStruct(), kRaisedFrame);
+  flout1 = Unew TGLayoutHints(kLHintsLeft | kLHintsTop, 2, 2, 2, 2);
+  fHorizontalFrame1330->AddFrame(fTextButton1353.get(), flout1.get());
+  fTextButton1362 = Unew TGTextButton(fHorizontalFrame1330.get(), "fTextButton1362", -1, TGTextButton::GetDefaultGC()(), TGTextButton::GetDefaultFontStruct(), kRaisedFrame);
   fTextButton1362->SetTextJustify(36);
   fTextButton1362->SetMargins(0, 0, 0, 0);
   fTextButton1362->SetWrapLength(-1);
   fTextButton1362->Resize(96, 22);
 
 
-
-  fHorizontalFrame1330->AddFrame(fTextButton1362, new TGLayoutHints(kLHintsLeft | kLHintsTop, 2, 2, 2, 2));
-
-  fVerticalFrame1325->AddFrame(fHorizontalFrame1330, new TGLayoutHints(kLHintsLeft | kLHintsTop | kLHintsExpandX, 2, 2, 2, 2));
+  flout2 = Unew TGLayoutHints(kLHintsLeft | kLHintsTop, 2, 2, 2, 2);
+  fHorizontalFrame1330->AddFrame(fTextButton1362.get(), flout2.get());
+  flout3 = Unew TGLayoutHints(kLHintsLeft | kLHintsTop | kLHintsExpandX, 2, 2, 2, 2);
+  fVerticalFrame1325->AddFrame(fHorizontalFrame1330.get(), flout3.get());
 
   // embedded canvas
-  fRootEmbeddedCanvas1337 = new TRootEmbeddedCanvas(0, fVerticalFrame1325, 573, 525, kSunkenFrame);
+  fRootEmbeddedCanvas1337 = Unew TRootEmbeddedCanvas(0, fVerticalFrame1325.get(), 573, 525, kSunkenFrame);
   fRootEmbeddedCanvas1337->SetName("fRootEmbeddedCanvas1337");
   Int_t wfRootEmbeddedCanvas1337 = fRootEmbeddedCanvas1337->GetCanvasWindowId();
   c123 = new TCanvas("c123", 10, 10, wfRootEmbeddedCanvas1337);
   fRootEmbeddedCanvas1337->AdoptCanvas(c123);
-  fVerticalFrame1325->AddFrame(fRootEmbeddedCanvas1337, new TGLayoutHints(kLHintsLeft | kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2));
 
-  fMainFrame1654->AddFrame(fVerticalFrame1325, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 1, 1, 1, 1));
+  flout4 = Unew TGLayoutHints(kLHintsLeft | kLHintsTop | kLHintsExpandX | kLHintsExpandY, 2, 2, 2, 2);
+  fVerticalFrame1325->AddFrame(fRootEmbeddedCanvas1337.get(), flout4.get());
+
+  flout5 = Unew TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 1, 1, 1, 1);
+  fMainFrame1654->AddFrame(fVerticalFrame1325.get(), flout5.get());
 
   fMainFrame1654->SetMWMHints(kMWMDecorAll,
     kMWMFuncAll,
@@ -60,6 +65,11 @@ ui::ui(TApplication* app_):m_app(app_)
   _RQ_signals(fTextButton1362).Clicked() >> _RQ_slots(this).push2();
   _RQ_signals(fMainFrame1654).CloseWindow() >> _RQ_slots(this).push3();
 
+
+}
+
+ui::~ui()
+{
 
 }
 
@@ -83,6 +93,7 @@ void ui::push2()
 
 void ui::push3()
 {
+
   m_app->Terminate(0);
 }
 

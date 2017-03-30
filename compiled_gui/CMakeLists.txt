@@ -7,7 +7,7 @@ file(GLOB src_files  "*.cxx" "*.cc")
 
 
 
-INCLUDE_DIRECTORIES(. ../extern/TGSignals/include ${ROOT_INCLUDE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
+INCLUDE_DIRECTORIES(. ../extern/TGSignals/include ../extern/UNew ${ROOT_INCLUDE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
 
 
 SET(dictFile guiDict.cxx)

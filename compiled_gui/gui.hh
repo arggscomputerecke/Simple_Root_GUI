@@ -134,6 +134,7 @@
 
 
 #ifndef __CINT__
+#include <memory>
 #include "TGSignals.hh"
 START__DEFINE_RQ_SLOTS_BASE_CLASS(ui)
 __DEFINE_RQ_SLOT__(push1, "push1()");
@@ -147,6 +148,7 @@ class ui {
 
 public:
   ui(TApplication* app_);
+  ~ui();
   void push1();
 
   void push2();
@@ -156,14 +158,21 @@ public:
   void pushvoid();
   void pushccharStar(const char* test);
 
-  TGMainFrame *fMainFrame1654;
-  TGVerticalFrame *fVerticalFrame1325;
-  TGHorizontalFrame *fHorizontalFrame1330;
-  TGTextButton *fTextButton1353;
-  TGTextButton *fTextButton1362;
-  TRootEmbeddedCanvas *fRootEmbeddedCanvas1337;
+#ifndef __CINT__
+  std::unique_ptr<TGMainFrame> fMainFrame1654;
+  std::unique_ptr<TGVerticalFrame> fVerticalFrame1325;
+  std::unique_ptr<TGHorizontalFrame> fHorizontalFrame1330;
+  std::unique_ptr<TGTextButton> fTextButton1353;
+  std::unique_ptr<TGTextButton> fTextButton1362;
+  std::unique_ptr<TRootEmbeddedCanvas> fRootEmbeddedCanvas1337;
+  std::unique_ptr<TGLayoutHints> flout1;
+  std::unique_ptr<TGLayoutHints> flout2;
+  std::unique_ptr<TGLayoutHints> flout3;
+  std::unique_ptr<TGLayoutHints> flout4;
+  std::unique_ptr<TGLayoutHints> flout5;
   TCanvas *c123;
   TApplication* m_app;
+#endif
   //static std::string Class_Name() {return "ui";}
 };
 #endif // gui_h__

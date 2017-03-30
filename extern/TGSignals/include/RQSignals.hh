@@ -1,6 +1,26 @@
 #ifndef RQSignals_h__
 #define RQSignals_h__
 #include <string>
+#include <memory>
+
+
+
+template <typename T>
+auto _RQ_signals(std::shared_ptr<T>& obj) {
+  return _RQ_signals(obj.get());
+}
+template <typename T>
+auto _RQ_signals(std::unique_ptr<T>& obj) {
+  return _RQ_signals(obj.get());
+}
+template <typename T>
+auto _RQ_slots(std::shared_ptr<T>& obj) {
+  return _RQ_slots(obj.get());
+}
+template <typename T>
+auto _RQ_slots(std::unique_ptr<T>& obj) {
+  return _RQ_slots(obj.get());
+}
 
 #define  __DEFINE_RQ_SIGNAL__(funName,SignalString) /*emits SignalString*/ \
 RQ_SIGNAL_TEMPLATE<T>  funName() { \
@@ -13,6 +33,9 @@ return RQ_SIGNAL_TEMPLATE<T>(m_object, SignalString, cname.Data()); \
 #define  __DEFINE_RQ_SIGNAL__FACTORY(ClassName,ClassSignalName) class ClassName;\
  inline ClassSignalName<ClassName> _RQ_signals(ClassName* obj) {\
   return ClassSignalName<ClassName>(obj, #ClassName);\
+}\
+inline ClassSignalName<ClassName> _RQ_signals(ClassName& obj) {\
+  return ClassSignalName<ClassName>(&obj, #ClassName);\
 }
 
 
@@ -34,6 +57,9 @@ public: \
  inline CLASSNAME##_signals<CLASSNAME> _RQ_signals(CLASSNAME* obj) {\
   return CLASSNAME##_signals<CLASSNAME>(obj, #CLASSNAME);\
 }\
+inline CLASSNAME##_signals<CLASSNAME> _RQ_signals(CLASSNAME& obj) {\
+  return CLASSNAME##_signals<CLASSNAME>(&obj, #CLASSNAME);\
+}
 
 
 #define START__DEFINE_RQ_SLOTS_BASE_CLASS(CLASSNAME) class CLASSNAME; \
@@ -55,6 +81,9 @@ public: \
  inline CLASSNAME##_slots<CLASSNAME> _RQ_slots(CLASSNAME* obj) {\
   return CLASSNAME##_slots<CLASSNAME>(obj, #CLASSNAME);\
 }\
+ inline CLASSNAME##_slots<CLASSNAME> _RQ_slots(CLASSNAME& obj) {\
+  return CLASSNAME##_slots<CLASSNAME>(&obj, #CLASSNAME);\
+}
 
 #define __DEFINE_RQ_SLOT__(funName,SignalString)  \
 RQ_SLOT_TEMPLATE<T>  funName() { \
@@ -65,8 +94,10 @@ return RQ_SLOT_TEMPLATE<T>(m_object, SignalString, cname.Data()); \
 
 #define  __DEFINE_RQ_SLOT__FACTORY(ClassName,ClassSignalName) inline ClassSignalName<ClassName> _RQ_slots(ClassName* obj) {\
   return ClassSignalName<ClassName>(obj, #ClassName);\
+}\
+inline ClassSignalName<ClassName> _RQ_slots(ClassName& obj) {\
+  return ClassSignalName<ClassName>(&obj, #ClassName);\
 }
-
 
 template <typename T>
 class RQ_SLOT_TEMPLATE {
